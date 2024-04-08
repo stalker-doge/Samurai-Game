@@ -30,6 +30,10 @@ public class Player : MonoBehaviour
     [SerializeField] float lookSensitivity = 1.0f;
     private float xRotation = 0f;
 
+    //attack
+    Vector3 attackDirection = Vector3.zero;
+    [SerializeField] LineRenderer lineRenderer;
+
 
     Vector2 cameraDirection = Vector2.zero;
     Vector3 movementDirection = Vector3.zero;
@@ -51,7 +55,8 @@ public class Player : MonoBehaviour
     {
         Look();
         Move();
-        Attack();
+        //Attack();
+        //StopAttack();
     }
     private void OnEnable()
     {
@@ -61,8 +66,9 @@ public class Player : MonoBehaviour
         cameraInput.Enable();
         attack = playerInputMap.FindAction("Attack");
         attack.Enable();
-        //when the player first presses the attack button, the player will attack and when it's released, the player will finish the attack
-
+        //when the player first presses the attack button, the player will start the attack method, and when the player releases the attack button, the player will start a different method
+        playerInputMap.FindAction("Attack").performed += context => Attack();
+        playerInputMap.FindAction("Attack").canceled += context => StopAttack();
         playerInputMap.FindAction("Jump").started += Jump;
         //playerInputMap.FindAction("Menu").started += QuitGame;
         playerInputMap.Enable();
@@ -130,5 +136,21 @@ public class Player : MonoBehaviour
     void Attack()
     {
 
+        //stores the 
+        Debug.Log("Attacking");
+
+
+    }
+
+    void StopAttack()
+    {
+
+        //draws a line on the screen starting from a previous position to the current position using attackDirection
+
+        Vector3 startPos = attackDirection;
+        Vector3 endPos = cam.transform.forward * 10;
+        lineRenderer.SetPosition(0, startPos);
+        lineRenderer.SetPosition(1, endPos);
+        Debug.Log("Stopped Attacking");
     }
 }

@@ -11,10 +11,20 @@ public class StateController : MonoBehaviour
     public ChaseState chaseState = new ChaseState();
     public PatrolState patrolState = new PatrolState();
     public HurtState hurtState = new HurtState();
+    public SpawnState spawnState = new SpawnState();
+
+    [SerializeField] bool isSpawner = false;
 
     private void Start()
     {
-        ChangeState(patrolState);
+        if(!isSpawner)
+        {
+            ChangeState(patrolState);
+        }
+        else
+        {
+            ChangeState(spawnState);
+        }
     }
 
     void FixedUpdate()
