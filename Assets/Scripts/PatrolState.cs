@@ -7,7 +7,7 @@ public class PatrolState : State
     float timeBeforeSleep;
     GameObject[] waypoints;
     int _currentWaypointIndex = 0;
-    float moveSpeed = 1;
+    float moveSpeed = 0.1f;
 
     protected override void OnEnter()
     {
@@ -23,7 +23,7 @@ public class PatrolState : State
 
 
             Transform wp = waypoints[_currentWaypointIndex].transform;
-            if (Vector3.Distance(sc.transform.position, wp.position) < 0.01f)
+            if (Vector3.Distance(sc.transform.position, wp.position) < 1f)
             {
                 _currentWaypointIndex = (_currentWaypointIndex + 1) % waypoints.Length;
             }

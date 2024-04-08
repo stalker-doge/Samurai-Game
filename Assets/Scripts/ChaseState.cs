@@ -7,7 +7,7 @@ public class ChaseState : State
 {
     float timeBeforePatrol;
     float attackCooldown=2;
-    float moveSpeed=1;
+    float moveSpeed=0.1f;
     bool isChasing = true;
     float maxDistance = 10;
     GameObject player;

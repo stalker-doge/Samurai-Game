@@ -26,7 +26,7 @@ public class SpawnState : State
         if (spawnCooldown <= 0)
         {
             //spawn an enemy in a random location around the player
-            Vector3 spawnPos = new Vector3(sc.transform.position.x + Random.Range(-spawnRadius, spawnRadius), 0, sc.transform.position.z + Random.Range(-spawnRadius, spawnRadius));
+            Vector3 spawnPos = new Vector3(sc.transform.position.x + Random.Range(-spawnRadius, spawnRadius), 2, sc.transform.position.z + Random.Range(-spawnRadius, spawnRadius));
             GameObject.Instantiate(enemy, spawnPos, Quaternion.identity);
             spawnCooldown = 5.0f;
         }

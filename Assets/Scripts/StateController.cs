@@ -44,6 +44,10 @@ public class StateController : MonoBehaviour
         currentState = newState;
         currentState.OnStateEnter(this);
     }
+    public void Hurt()
+    {
+        currentState.OnStateHurt();
+    }
 }
 public abstract class State
 {
@@ -75,6 +79,7 @@ public abstract class State
     public void OnStateHurt()
     {
         // Code placed here will always run
+        Debug.Log("YEEEEEOUCH");
         OnHurt();
     }
 

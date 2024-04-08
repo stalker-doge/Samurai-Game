@@ -34,7 +34,6 @@ public class Player : MonoBehaviour
     Vector3 attackDirection = Vector3.zero;
     [SerializeField] LineRenderer lineRenderer;
 
-
     Vector2 cameraDirection = Vector2.zero;
     Vector3 movementDirection = Vector3.zero;
 
@@ -55,8 +54,6 @@ public class Player : MonoBehaviour
     {
         Look();
         Move();
-        //Attack();
-        //StopAttack();
     }
     private void OnEnable()
     {
@@ -136,9 +133,8 @@ public class Player : MonoBehaviour
     void Attack()
     {
 
-        //stores the 
-        Debug.Log("Attacking");
-
+        //stores the attack start direction
+        attackDirection =cam.transform.position+cam.transform.forward*2;
 
     }
 
@@ -148,9 +144,18 @@ public class Player : MonoBehaviour
         //draws a line on the screen starting from a previous position to the current position using attackDirection
 
         Vector3 startPos = attackDirection;
-        Vector3 endPos = cam.transform.forward * 10;
+        Vector3 endPos = cam.transform.position + cam.transform.forward*3;
+        Vector3 direction = endPos - startPos;
         lineRenderer.SetPosition(0, startPos);
         lineRenderer.SetPosition(1, endPos);
-        Debug.Log("Stopped Attacking");
+        RaycastHit hit;
+        if (Physics.Raycast(startPos, endPos, out hit, Mathf.Infinity))
+        {
+            if (hit.collider.tag=="Enemy")
+            {
+                hit.collider.gameObject.GetComponent<StateController>().Hurt();
+                hit.collider.gameObject.GetComponent<EnemyBody>().DamagePart(10);
+            }
+        }
     }
 }
