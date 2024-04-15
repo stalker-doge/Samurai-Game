@@ -36,6 +36,8 @@ public class Player : MonoBehaviour
     [SerializeField] LineRenderer lineRenderer;
     //the weapon the player is currently holding
     WeaponType currentWeapon;
+    GameObject equippedWeapon;
+    Transform weaponLocation;
 
     Vector2 cameraDirection = Vector2.zero;
     Vector3 movementDirection = Vector3.zero;
@@ -51,6 +53,7 @@ public class Player : MonoBehaviour
         playerInputMap = playerInputActions.FindActionMap("Player");
         //rb = this.GetComponent<Rigidbody>();
         controller = GetComponent<CharacterController>();
+        weaponLocation= GetComponent<Transform>();
     }
 
     private void Update()
@@ -178,6 +181,7 @@ public class Player : MonoBehaviour
             if (hit.collider.tag == "Weapon")
             {
                 currentWeapon = hit.collider.gameObject.GetComponent<WeaponType>();
+                equippedWeapon = hit.collider.gameObject;
                 Debug.Log("Weapon type: " + currentWeapon.weaponType);
             }
         }
