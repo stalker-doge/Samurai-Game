@@ -73,7 +73,7 @@ public class Player : MonoBehaviour
         interact= playerInputMap.FindAction("Interact");
         interact.Enable();
         //when the player first presses the attack button, the player will start the attack method, and when the player releases the attack button, the player will start a different method
-        playerInputMap.FindAction("Attack").performed += context => Attack();
+        playerInputMap.FindAction("Attack").started += context => Attack();
         playerInputMap.FindAction("Attack").canceled += context => StopAttack();
         playerInputMap.FindAction("Jump").started += Jump;
         playerInputMap.FindAction("Interact").started += context => Interact();

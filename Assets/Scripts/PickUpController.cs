@@ -25,7 +25,7 @@ public class PickUpController : MonoBehaviour
 
         transform.SetParent(weaponContainer);
         transform.localPosition = Vector3.zero;
-        transform.localScale = Vector3.one;
+        transform.localScale = Vector3.one*0.5f;
         transform.localRotation = Quaternion.Euler(Vector3.zero);
         rb.isKinematic = true;
         coll.isTrigger = true;
@@ -61,6 +61,8 @@ public class PickUpController : MonoBehaviour
         if (!equipped && distanceToPlayer.magnitude <= pickUpRange && Input.GetKeyDown(KeyCode.E) && !slotFull) PickUp();
 
         if (equipped && Input.GetKeyDown(KeyCode.Q)) Drop();
+
+        if (equipped) transform.localPosition = Vector3.zero;
     }
 
     private void Start()
@@ -70,6 +72,15 @@ public class PickUpController : MonoBehaviour
             weaponScript.enabled=false;
             rb.isKinematic=false;
             coll.isTrigger=false;
+        }
+        if(equipped)
+        {
+            weaponScript.enabled = true;
+            rb.isKinematic = true;
+            coll.isTrigger = true;
+            slotFull = true;
+            PickUp();
+
         }
     }
 }
