@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     private InputAction movement;
     private InputAction cameraInput;
     private InputAction attack;
+    private InputAction interact;
     private CharacterController controller;
 
 
@@ -33,6 +34,8 @@ public class Player : MonoBehaviour
     //attack
     Vector3 attackDirection = Vector3.zero;
     [SerializeField] LineRenderer lineRenderer;
+    //the weapon the player is currently holding
+    WeaponType currentWeapon;
 
     Vector2 cameraDirection = Vector2.zero;
     Vector3 movementDirection = Vector3.zero;
@@ -63,10 +66,14 @@ public class Player : MonoBehaviour
         cameraInput.Enable();
         attack = playerInputMap.FindAction("Attack");
         attack.Enable();
+
+        interact= playerInputMap.FindAction("Interact");
+        interact.Enable();
         //when the player first presses the attack button, the player will start the attack method, and when the player releases the attack button, the player will start a different method
         playerInputMap.FindAction("Attack").performed += context => Attack();
         playerInputMap.FindAction("Attack").canceled += context => StopAttack();
         playerInputMap.FindAction("Jump").started += Jump;
+        playerInputMap.FindAction("Interact").started += context => Interact();
         //playerInputMap.FindAction("Menu").started += QuitGame;
         playerInputMap.Enable();
         Cursor.lockState = CursorLockMode.Locked;
@@ -149,12 +156,29 @@ public class Player : MonoBehaviour
         lineRenderer.SetPosition(0, startPos);
         lineRenderer.SetPosition(1, endPos);
         RaycastHit hit;
-        if (Physics.Raycast(startPos, endPos, out hit, Mathf.Infinity))
+
+        //if the line collides with an enemy, the enemy takes damage
+        if (Physics.Raycast(startPos, direction, out hit, Mathf.Infinity))
         {
-            if (hit.collider.tag=="Enemy")
+            if (hit.collider.tag == "Enemy")
             {
                 hit.collider.gameObject.GetComponent<StateController>().Hurt();
-                hit.collider.gameObject.GetComponent<EnemyBody>().DamagePart(10);
+                //deals damage to the enemy based on the weapon type
+                hit.collider.gameObject.GetComponent<EnemyBody>().DamagePart(currentWeapon.damage);
+            }
+        }
+    }
+
+    void Interact()
+    {
+        //changes the weapon type to what the player is looking at
+        RaycastHit hit;
+        if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, Mathf.Infinity))
+        {
+            if (hit.collider.tag == "Weapon")
+            {
+                currentWeapon = hit.collider.gameObject.GetComponent<WeaponType>();
+                Debug.Log("Weapon type: " + currentWeapon.weaponType);
             }
         }
     }
