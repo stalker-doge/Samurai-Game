@@ -38,6 +38,7 @@ public class Player : MonoBehaviour
     WeaponType currentWeapon;
     GameObject equippedWeapon;
     Transform weaponLocation;
+    Transform weaponLocationOriginal;
 
     Vector2 cameraDirection = Vector2.zero;
     Vector3 movementDirection = Vector3.zero;
@@ -54,6 +55,9 @@ public class Player : MonoBehaviour
         //rb = this.GetComponent<Rigidbody>();
         controller = GetComponent<CharacterController>();
         weaponLocation= GetComponent<Transform>();
+        currentWeapon = GetComponentInChildren<WeaponType>();
+        weaponLocation = gameObject.transform.GetChild(0).GetChild(0);
+        weaponLocationOriginal = weaponLocation;
     }
 
     private void Update()
@@ -142,34 +146,11 @@ public class Player : MonoBehaviour
 
     void Attack()
     {
-
-        //stores the attack start direction
-        attackDirection =cam.transform.position+cam.transform.forward*2;
-
     }
 
     void StopAttack()
     {
 
-        //draws a line on the screen starting from a previous position to the current position using attackDirection
-
-        Vector3 startPos = attackDirection;
-        Vector3 endPos = cam.transform.position + cam.transform.forward*3;
-        Vector3 direction = endPos - startPos;
-        lineRenderer.SetPosition(0, startPos);
-        lineRenderer.SetPosition(1, endPos);
-        RaycastHit hit;
-
-        //if the line collides with an enemy, the enemy takes damage
-        if (Physics.Raycast(startPos, direction, out hit, Mathf.Infinity))
-        {
-            if (hit.collider.tag == "Enemy")
-            {
-                hit.collider.gameObject.GetComponent<StateController>().Hurt();
-                //deals damage to the enemy based on the weapon type
-                hit.collider.gameObject.GetComponent<EnemyBody>().DamagePart(currentWeapon.damage);
-            }
-        }
     }
 
     void Interact()

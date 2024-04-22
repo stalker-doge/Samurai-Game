@@ -25,8 +25,8 @@ public class PickUpController : MonoBehaviour
 
         transform.SetParent(weaponContainer);
         transform.localPosition = Vector3.zero;
-        transform.localScale = Vector3.one*0.5f;
-        transform.localRotation = Quaternion.Euler(Vector3.zero);
+        transform.localScale = new Vector3(0.2f,0.5f,0.2f);
+        transform.localRotation = Quaternion.Euler(90f,0f,0f);
         rb.isKinematic = true;
         coll.isTrigger = true;
         weaponScript.enabled = true;
@@ -63,6 +63,7 @@ public class PickUpController : MonoBehaviour
         if (equipped && Input.GetKeyDown(KeyCode.Q)) Drop();
 
         if (equipped) transform.localPosition = Vector3.zero;
+        if (equipped) transform.localRotation = Quaternion.Euler(90f, 0f, 0f);
     }
 
     private void Start()
@@ -81,6 +82,15 @@ public class PickUpController : MonoBehaviour
             slotFull = true;
             PickUp();
 
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.tag == "Enemy")
+        {
+            collision.collider.gameObject.GetComponent<StateController>().Hurt();
+            collision.collider.gameObject.GetComponent<EnemyBody>().DamagePart(this.GetComponent<WeaponType>().damage);
         }
     }
 }

@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class EnemyBody : MonoBehaviour
 {
-    [SerializeField] int totalHealth = 100;
+    [SerializeField] int totalHealth = 10;
+    [SerializeField] EnemyBody bodyParts;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        bodyParts = gameObject.GetComponentInChildren<EnemyBody>();
     }
 
     // Update is called once per frame
