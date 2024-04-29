@@ -146,6 +146,8 @@ public class Player : MonoBehaviour
 
     void Attack()
     {
+       Vector3 newLocation = new Vector3(weaponLocation.transform.position.x+0.2f, weaponLocation.transform.position.y, weaponLocation.transform.position.z);
+        weaponLocation.transform.position = newLocation;
     }
 
     void StopAttack()
