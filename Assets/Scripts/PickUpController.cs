@@ -7,7 +7,7 @@ public class PickUpController : MonoBehaviour
 
     public WeaponType weaponScript;
     public Rigidbody rb;
-    public BoxCollider coll;
+    public CapsuleCollider coll;
     public Transform player, weaponContainer, fpsCam;
 
 
@@ -68,6 +68,9 @@ public class PickUpController : MonoBehaviour
 
     private void Start()
     {
+        coll = GetComponent<CapsuleCollider>();
+        rb = GetComponent<Rigidbody>();
+        weaponScript = GetComponent<WeaponType>();
         if(!equipped) 
         {
             weaponScript.enabled=false;
@@ -89,7 +92,7 @@ public class PickUpController : MonoBehaviour
     {
         if (collision.collider.tag == "Enemy")
         {
-            collision.collider.gameObject.GetComponent<StateController>().Hurt();
+            Debug.Log("Hit Enemy");
             collision.collider.gameObject.GetComponent<EnemyBody>().DamagePart(this.GetComponent<WeaponType>().damage);
         }
     }

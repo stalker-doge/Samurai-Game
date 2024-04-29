@@ -10,7 +10,9 @@ public class EnemyBody : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        bodyParts = gameObject.GetComponentInChildren<EnemyBody>();
+        //gets all the body parts attached to the enemy as children
+        bodyParts = GetComponentInChildren<EnemyBody>();
+
     }
 
     // Update is called once per frame
@@ -18,12 +20,28 @@ public class EnemyBody : MonoBehaviour
     {
         if(totalHealth <=0)
         {
-            this.gameObject.SetActive(false);
+            //checks if the body part is the main body part
+            if (bodyParts == null)
+            {
+                //if it is the main body part, the enemy is destroyed
+                Destroy(this.gameObject);
+            }
+            else
+            {
+                //detach the body parts
+                bodyParts.Detach();
+            }
         }
     }
 
     public void DamagePart(int damage)
     {
         totalHealth -= damage;
+    }
+
+    public void Detach()
+    {
+        //detach the body parts
+        bodyParts.transform.parent = null;
     }
 }

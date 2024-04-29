@@ -79,7 +79,6 @@ public abstract class State
     public void OnStateHurt()
     {
         // Code placed here will always run
-        Debug.Log("YEEEEEOUCH");
         OnHurt();
     }
 
