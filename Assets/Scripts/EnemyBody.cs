@@ -5,43 +5,53 @@ using UnityEngine;
 public class EnemyBody : MonoBehaviour
 {
     [SerializeField] int totalHealth = 10;
-    [SerializeField] EnemyBody bodyParts;
+    [SerializeField] bool isCriticalPart = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        //gets all the body parts attached to the enemy as children
-        bodyParts = GetComponentInChildren<EnemyBody>();
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(totalHealth <=0)
+        if (totalHealth <= 0)
         {
-            //checks if the body part is the main body part
-            if (bodyParts == null)
+            //if the part has a parent, detach it
+            if (transform.parent != null)
             {
-                //if it is the main body part, the enemy is destroyed
-                Destroy(this.gameObject);
+                transform.parent = null;
+                //remove constraints on the rigidbody
+                GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
             }
-            else
-            {
-                //detach the body parts
-                bodyParts.Detach();
-            }
+            //doesn't destroy the object immediately, so that the player can see the part fall off
+            Destroy(gameObject, 10.0f);
         }
     }
 
     public void DamagePart(int damage)
     {
+        //if the part is critical, it takes double damage
+        if (isCriticalPart)
+        {
+            damage *= 2;
+            //checks if the part is still alive
+            if (totalHealth <= 0)
+            {
+                return;
+            }
+            //triggers a hitstop from the scene
+            FindAnyObjectByType<HitStop>().Stop(0.1f);
+            //changes material color to white
+            GetComponent<Renderer>().material.color = Color.white;
+
+        }
         totalHealth -= damage;
     }
 
     public void Detach()
     {
-        //detach the body parts
-        bodyParts.transform.parent = null;
+        transform.parent = null;
     }
 }

@@ -38,10 +38,12 @@ public class Player : MonoBehaviour
     WeaponType currentWeapon;
     GameObject equippedWeapon;
     Transform weaponLocation;
-    Transform weaponLocationOriginal;
+    Vector3 weaponLocationOriginal;
 
     Vector2 cameraDirection = Vector2.zero;
     Vector3 movementDirection = Vector3.zero;
+
+    int health = 100;
 
 
     // Start is called before the first frame update
@@ -57,7 +59,8 @@ public class Player : MonoBehaviour
         weaponLocation= GetComponent<Transform>();
         currentWeapon = GetComponentInChildren<WeaponType>();
         weaponLocation = gameObject.transform.GetChild(0).GetChild(0);
-        weaponLocationOriginal = weaponLocation;
+        //saves the original weapon location in local space
+        weaponLocationOriginal = weaponLocation.localPosition;
     }
 
     private void Update()
@@ -146,13 +149,14 @@ public class Player : MonoBehaviour
 
     void Attack()
     {
-       Vector3 newLocation = new Vector3(weaponLocation.transform.position.x+0.2f, weaponLocation.transform.position.y, weaponLocation.transform.position.z);
-        weaponLocation.transform.position = newLocation;
+        //moves the weapon location slightly forward to simulate an attack, converting from world space to local space
+        weaponLocation.position = weaponLocation.position + weaponLocation.forward * 0.5f;
     }
 
     void StopAttack()
     {
-
+        //moves the weapon location back to its original position, converting from world space to local space
+        weaponLocation.localPosition = weaponLocationOriginal;
     }
 
     void Interact()
@@ -168,5 +172,19 @@ public class Player : MonoBehaviour
                 Debug.Log("Weapon type: " + currentWeapon.weaponType);
             }
         }
+    }
+
+    public void Hurt(int damage)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        Debug.Log("Player has died :(");
     }
 }

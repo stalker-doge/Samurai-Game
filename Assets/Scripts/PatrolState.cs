@@ -32,15 +32,12 @@ public class PatrolState : State
                 sc.GetComponent<Rigidbody>().MovePosition(Vector3.MoveTowards(sc.transform.position, wp.position, moveSpeed));
             }
         }
-        RaycastHit hit;
-        if (Physics.Raycast(sc.transform.position, sc.transform.TransformDirection(Vector3.forward), out hit))
+        //if the player gets too close, chase them
+        if (Vector3.Distance(sc.transform.position, GameObject.FindGameObjectWithTag("Player").transform.position) < 10)
         {
-            if(hit.collider.tag=="Player")
-            {
-                Debug.Log("Player Spotted!");
-                sc.ChangeState(sc.chaseState);
-            }
+            sc.ChangeState(sc.chaseState);
         }
+        //if the enemy has been patrolling too long, go to sleep
 
         if (timeBeforeSleep < 0)
         {

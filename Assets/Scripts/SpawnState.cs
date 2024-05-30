@@ -16,7 +16,7 @@ public class SpawnState : State
     protected override void OnEnter()
     {
         //updates enemy to the enemy prefab
-        enemy = Resources.Load<GameObject>("Enemy");
+        enemy = Resources.Load<GameObject>("Big Enemy");
         Debug.Log("Will spawn!");
     }
 

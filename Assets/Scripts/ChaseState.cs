@@ -11,10 +11,12 @@ public class ChaseState : State
     bool isChasing = true;
     float maxDistance = 10;
     GameObject player;
+    int damage = 10;
     protected override void OnEnter()
     {
         timeBeforePatrol = 10;
-        player = GameObject.FindGameObjectWithTag("Player");
+        player=GameObject.FindWithTag("Player");
+        Debug.Log("Chase State");
     }
 
     protected override void OnUpdate()
@@ -51,19 +53,20 @@ public class ChaseState : State
 
     void Attack()
     {
-        Debug.Log("HIT!");
+        player.GetComponent<Player>().Hurt(damage);
     }
 
     void ChasePlayer()
-    {
-        if (isChasing)
+    {   
+        
+        if (Vector3.Distance(sc.transform.position, player.transform.position) > maxDistance)
         {
-            sc.transform.LookAt(player.transform);
-            sc.transform.position += sc.transform.forward * moveSpeed * Time.deltaTime;
+            sc.ChangeState(sc.patrolState);
         }
-        if (Vector3.Distance(sc.transform.position, player.transform.position) >= maxDistance)
+        else
         {
-            isChasing = false;
+            sc.GetComponent<Rigidbody>().MovePosition(Vector3.MoveTowards(sc.transform.position, player.transform.position, moveSpeed));
         }
     }
+    
 }

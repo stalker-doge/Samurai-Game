@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 7738039805814734767}
   - component: {fileID: 1009013301362523431}
   - component: {fileID: 5883178635307111066}
+  - component: {fileID: 1190387984226265136}
   m_Layer: 0
   m_Name: Weapon
   m_TagString: Weapon
@@ -173,3 +174,24 @@ MonoBehaviour:
   dropForwardForce: 15
   dropUpwardForce: 7
   equipped: 0
+--- !u!65 &1190387984226265136
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2337339233734835299}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.9221783, y: 0.8423203, z: 4.217904}
+  m_Center: {x: -0.0044616163, y: 0.011105195, z: 1.4709215}
